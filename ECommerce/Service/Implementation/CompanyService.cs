@@ -21,7 +21,7 @@ namespace Service.Implementation
             if (company)
             {
                 return null;
-                
+
             }
 
             var AddedCompany = new TblCompany();
@@ -78,7 +78,7 @@ namespace Service.Implementation
         }
 
         //method for updating the company details
-        public TblCompany UpdateCompany(long CompanyId,UpdateCompanyModel model)
+        public TblCompany UpdateCompany(long CompanyId, UpdateCompanyModel model)
         {
             var companydetails = _db.TblCompanies.Where(x => (x.CompanyName == model.CompanyName && x.Email == model.Email) && x.CompanyId != model.CompanyId).AsQueryable(); //checks wheather the company name and email already exist or not
             if (companydetails.Any())

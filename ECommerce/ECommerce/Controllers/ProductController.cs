@@ -20,7 +20,7 @@ namespace ECommerce.Controllers
         public IActionResult ProductDetail(long ProductId)
         {
             ProductModel resposne = _productService.GetProductDetail(ProductId);
-            if(resposne == null)
+            if (resposne == null)
             {
                 return NotFound();
             }
@@ -28,40 +28,40 @@ namespace ECommerce.Controllers
             {
                 return Ok(resposne);
             }
-            
+
         }
 
-        [Authorize(Roles ="Supplier")]
+        [Authorize(Roles = "Supplier")]
         [HttpPost("/addproduct")]
         public IActionResult AddProduct(AddProductModel model)
         {
             TblProduct Product = _productService.AddProduct(model);
-            if(Product != null)
+            if (Product != null)
             {
                 return Ok("Product Added Successfully!");
             }
             else
             {
-                return StatusCode(409,"Product Already Exists");
+                return StatusCode(409, "Product Already Exists");
             }
         }
 
         [Authorize(Roles = "Supplier")]
         [HttpPut("/updateproduct/{ProductId}")]
-        public IActionResult UpdateProduct(long ProductId,UpdateProductModel model)
+        public IActionResult UpdateProduct(long ProductId, UpdateProductModel model)
         {
             if (ProductId != model.ProductId)
             {
                 return BadRequest();
             }
-            TblProduct Product = _productService.UpdateProduct(ProductId,model);
+            TblProduct Product = _productService.UpdateProduct(ProductId, model);
             if (Product != null)
             {
                 return Ok("Product Updated Successfully!");
             }
             else
             {
-                return StatusCode(409,"Product doesn't Exists");
+                return StatusCode(409, "Product doesn't Exists");
             }
         }
 
@@ -70,7 +70,7 @@ namespace ECommerce.Controllers
         public IActionResult DeleteProduct(long ProductId)
         {
             bool Product = _productService.DeleteProduct(ProductId);
-            if(Product == true)
+            if (Product == true)
             {
                 return Ok("Product Deleted Successfully!");
             }

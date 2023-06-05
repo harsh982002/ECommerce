@@ -50,7 +50,7 @@ namespace Service.Implementation
         //Encrypt the normal password to encrypted format
         public string EncryptedPassword(string? password)
         {
-            var EncryptPassword = PasswordEncryption.EncryptedPassword(password); 
+            var EncryptPassword = PasswordEncryption.EncryptedPassword(password);
             return EncryptPassword ?? string.Empty;
         }
 
@@ -75,8 +75,8 @@ namespace Service.Implementation
             if (user == true)
             {
                 return null;
-               
-            } 
+
+            }
 
             var newuser = new TblUser();
             {

@@ -37,26 +37,26 @@ namespace ECommerce.Controllers
         public IActionResult AddCompany(AddCompanyModel model)
         {
             TblCompany Company = _companyService.AddCompany(model);
-            if(Company != null)
+            if (Company != null)
             {
                 return Ok("Company Added successfully");
             }
             else
             {
-                return StatusCode(409,"Company Already Exist");
+                return StatusCode(409, "Company Already Exist");
             }
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("/updatecompany/{CompanyId}")]
-        public IActionResult UpdateCompany(long CompanyId,UpdateCompanyModel model)
+        public IActionResult UpdateCompany(long CompanyId, UpdateCompanyModel model)
         {
-            if(CompanyId != model.CompanyId)
+            if (CompanyId != model.CompanyId)
             {
                 return BadRequest();
             }
-            TblCompany company = _companyService.UpdateCompany(CompanyId,model);
-            if(company != null)
+            TblCompany company = _companyService.UpdateCompany(CompanyId, model);
+            if (company != null)
             {
                 return Ok("Company Updated successfully");
             }
@@ -71,7 +71,7 @@ namespace ECommerce.Controllers
         public IActionResult DeleteCompany(long CompanyId)
         {
             bool Company = _companyService.DeleteCompany(CompanyId);
-            if(Company == true)
+            if (Company == true)
             {
                 return Ok("Company Removed Successfully");
             }

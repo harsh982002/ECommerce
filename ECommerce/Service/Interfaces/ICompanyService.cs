@@ -9,7 +9,7 @@ namespace Service.Interfaces
 
         public TblCompany AddCompany(AddCompanyModel model);
 
-        public TblCompany UpdateCompany(long CompanyId,UpdateCompanyModel model);
+        public TblCompany UpdateCompany(long CompanyId, UpdateCompanyModel model);
 
         public bool DeleteCompany(long CompanyId);
     }

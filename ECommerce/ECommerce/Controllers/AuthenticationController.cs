@@ -1,5 +1,4 @@
-﻿using Common.Helpers;
-using Data.Entities;
+﻿using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
@@ -46,7 +45,7 @@ namespace ECommerce.Controllers
             if (ModelState.IsValid)
             {
                 TblUser user = _authService.Registration(model);
-                if(user != null)
+                if (user != null)
                 {
                     return Ok("You Have Successfully Registered Yourself.You Can Login Now.");
                 }
