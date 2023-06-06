@@ -1,5 +1,4 @@
-﻿using Data.Entities;
-using Service.Models.Authentication;
+﻿using Service.Models.Authentication;
 
 namespace Service.Interfaces
 {
@@ -11,6 +10,6 @@ namespace Service.Interfaces
 
         public string GetUserDetail(long UserId);
 
-        public TblUser Registration(RegistrationModel model);
+        public string Registration(RegistrationModel model);
     }
 }

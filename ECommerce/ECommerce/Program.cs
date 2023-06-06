@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.Configure<JwtViewModel>(builder.Configuration.GetSection("JwtViewModel"));
+builder.Services.Configure<Imageurl>(builder.Configuration.GetSection("Imageurl"));
 builder.Services.AddDbContext<EcommerceContext>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductService, ProductService>();

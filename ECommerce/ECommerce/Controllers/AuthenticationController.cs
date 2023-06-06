@@ -1,5 +1,4 @@
-﻿using Data.Entities;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 using Service.Models.Authentication;
@@ -40,11 +39,11 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost("/registration")]
-        public IActionResult Registration(RegistrationModel model)
+        public IActionResult Registration([FromForm]RegistrationModel model)
         {
             if (ModelState.IsValid)
             {
-                TblUser user = _authService.Registration(model);
+                string user = _authService.Registration(model);
                 if (user != null)
                 {
                     return Ok("You Have Successfully Registered Yourself.You Can Login Now.");
@@ -86,5 +85,7 @@ namespace ECommerce.Controllers
         {
             return Ok("You Are Authorized person");
         }
+
+        
     }
 }

@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "EJpu9ThlS0MOrKyywQ7byR859q7mY1nZaFX4f3Q27f0=",
+  "Hash": "l0vQhnB00NV6tSn6m3rNYFcKuKWBOKINTwrSxsHkQIE=",
   "Source": "ECommerce",
   "BasePath": "_content/ECommerce",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ECommerce\\wwwroot",
+      "Source": "ECommerce",
+      "ContentRoot": "C:\\ECommerceWebAPI\\ECommerce\\ECommerce\\wwwroot\\",
+      "BasePath": "_content/ECommerce",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

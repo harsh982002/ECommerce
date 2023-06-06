@@ -1,16 +1,20 @@
-﻿using Data.Entities;
+﻿using Common.AppSettings;
 using Service.Models.Supplier;
 
 namespace Service.Interfaces
 {
     public interface ISupplierService
     {
-        public SupplierModel GetSupplierDetails(short SupplierId);
+        public SupplierModel GetSupplierDetailsById(short SupplierId);
 
-        public TblSupplier AddSupplier(AddSupplierModel model);
+        public long? AddSupplier(AddSupplierModel model);
 
-        public TblSupplier UpdateSupplier(short SupplierId,UpdateSupplierModel model);
+        public ResponseModel UpdateSupplier(short SupplierId,UpdateSupplierModel model);
 
         public bool DeleteSupplier(short SupplierId);
+
+        public List<SupplierModel> GetSupplierDetails();
+
+        public bool SupplierStatus(short SupplierId, bool status);
     }
 }

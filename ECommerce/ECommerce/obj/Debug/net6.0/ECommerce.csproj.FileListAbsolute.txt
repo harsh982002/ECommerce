@@ -73,7 +73,6 @@ C:\ECommerceWebAPI\ECommerce\ECommerce\obj\Debug\net6.0\ECommerce.GeneratedMSBui
 C:\ECommerceWebAPI\ECommerce\ECommerce\obj\Debug\net6.0\ECommerce.AssemblyInfoInputs.cache
 C:\ECommerceWebAPI\ECommerce\ECommerce\obj\Debug\net6.0\ECommerce.AssemblyInfo.cs
 C:\ECommerceWebAPI\ECommerce\ECommerce\obj\Debug\net6.0\ECommerce.csproj.CoreCompileInputs.cache
-C:\ECommerceWebAPI\ECommerce\ECommerce\obj\Debug\net6.0\ECommerce.MvcApplicationPartsAssemblyInfo.cs
 C:\ECommerceWebAPI\ECommerce\ECommerce\obj\Debug\net6.0\ECommerce.MvcApplicationPartsAssemblyInfo.cache
 C:\ECommerceWebAPI\ECommerce\ECommerce\obj\Debug\net6.0\staticwebassets.build.json
 C:\ECommerceWebAPI\ECommerce\ECommerce\obj\Debug\net6.0\staticwebassets.development.json
@@ -89,3 +88,5 @@ C:\ECommerceWebAPI\ECommerce\ECommerce\bin\Debug\net6.0\Service.dll
 C:\ECommerceWebAPI\ECommerce\ECommerce\bin\Debug\net6.0\Service.pdb
 C:\ECommerceWebAPI\ECommerce\ECommerce\bin\Debug\net6.0\Common.pdb
 C:\ECommerceWebAPI\ECommerce\ECommerce\bin\Debug\net6.0\Data.pdb
+C:\ECommerceWebAPI\ECommerce\ECommerce\bin\Debug\net6.0\ECommerce.staticwebassets.runtime.json
+C:\ECommerceWebAPI\ECommerce\ECommerce\obj\Debug\net6.0\ECommerce.MvcApplicationPartsAssemblyInfo.cs

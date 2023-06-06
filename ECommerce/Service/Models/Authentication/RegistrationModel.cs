@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Service.Models.Authentication
 {
@@ -37,6 +38,6 @@ namespace Service.Models.Authentication
         [Required]
         public int? CityId { get; set; }
 
-        public string? Avatar { get; set; }
+        public IFormFile? Avatar { get; set; }
     }
 }

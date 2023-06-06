@@ -1,4 +1,4 @@
-﻿using Data.Entities;
+﻿using Common.AppSettings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
@@ -16,17 +16,18 @@ namespace ECommerce.Controllers
             _productService = productService;
         }
 
-        [HttpGet("/productdetails")]
-        public IActionResult ProductDetail(long ProductId)
+        [Authorize(Roles ="Admin,Supplier")]
+        [HttpGet("/productdetails/{ProductId}")]
+        public IActionResult ProductDetailById(long ProductId)
         {
-            ProductModel resposne = _productService.GetProductDetail(ProductId);
-            if (resposne == null)
+            ProductModel Resposne = _productService.GetProductDetailById(ProductId);
+            if (Resposne == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(resposne);
+                return Ok(Resposne);
             }
 
         }
@@ -35,14 +36,18 @@ namespace ECommerce.Controllers
         [HttpPost("/addproduct")]
         public IActionResult AddProduct(AddProductModel model)
         {
-            TblProduct Product = _productService.AddProduct(model);
-            if (Product != null)
+            long? Response = _productService.AddProduct(model);
+            if (Response != null)
             {
-                return Ok("Product Added Successfully!");
+                return Ok(Response);
             }
             else
             {
-                return StatusCode(409, "Product Already Exists");
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Product Already Exist!"
+                });
             }
         }
 
@@ -54,14 +59,26 @@ namespace ECommerce.Controllers
             {
                 return BadRequest();
             }
-            TblProduct Product = _productService.UpdateProduct(ProductId, model);
-            if (Product != null)
+            ResponseModel Response = _productService.UpdateProduct(ProductId, model);
+            if (Response != null)
             {
                 return Ok("Product Updated Successfully!");
             }
+            else if (Response?.Message == "Product Doesn't Exist!")
+            {
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Product Doesn't Exist!"
+                });
+            }
             else
             {
-                return StatusCode(409, "Product doesn't Exists");
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Product Already Exist!"
+                });
             }
         }
 
@@ -69,14 +86,53 @@ namespace ECommerce.Controllers
         [HttpDelete("/deleteproduct/{ProductId}")]
         public IActionResult DeleteProduct(long ProductId)
         {
-            bool Product = _productService.DeleteProduct(ProductId);
-            if (Product == true)
+            bool Response = _productService.DeleteProduct(ProductId);
+            if (Response == true)
             {
                 return Ok("Product Deleted Successfully!");
             }
             else
             {
-                return StatusCode(409, "Product doesn't Exists");
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Product Already Exist!"
+                });
+            }
+        }
+
+        [Authorize(Roles = "Supplier")]
+        [HttpPost("/productimage")]
+        public IActionResult ProductImages([FromForm]ProductImageModel model)
+        {
+            string Response = _productService.ProductImage(model);
+            if(Response != null)
+            {
+                return Ok(Response);
+            }
+            else
+            {
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Product doesn't Exist!"
+                });
+
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/productdetails")]
+        public IActionResult ProductDetails()
+        {
+            List<ProductModel> Response = _productService.GetProductDetails();
+            if (Response == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(Response);
             }
         }
     }

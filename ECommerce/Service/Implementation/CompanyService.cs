@@ -1,4 +1,5 @@
-﻿using Data.Data;
+﻿using Common.AppSettings;
+using Data.Data;
 using Data.Entities;
 using Service.Interfaces;
 using Service.Models.Company;
@@ -15,13 +16,12 @@ namespace Service.Implementation
         }
 
         //method to adding the new company
-        public TblCompany AddCompany(AddCompanyModel model)
+        public long? AddCompany(AddCompanyModel model)
         {
             var company = _db.TblCompanies.Any(x => x.CompanyName.ToLower() == model.CompanyName.ToLower() && x.Email == model.Email); //checks wheather the company name and email already exist or not.
             if (company)
             {
                 return null;
-
             }
 
             var AddedCompany = new TblCompany();
@@ -36,7 +36,22 @@ namespace Service.Implementation
             _db.TblCompanies.Add(AddedCompany);
             _db.SaveChanges();
 
-            return AddedCompany;
+            return AddedCompany.CompanyId;
+        }
+
+        public bool CompanyStatus(long CompanyId, bool status)
+        {
+            var company = _db.TblCompanies.Find(CompanyId);
+            if (company != null && company.DeletedAt == null)
+            {
+                company.IsActive = status;
+                _db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         //method for deleting the company
@@ -56,10 +71,10 @@ namespace Service.Implementation
         }
 
         //method for get the details of company by CompanyId
-        public CompanyModel GetCompanyDetail(long CompanyId)
+        public CompanyModel GetCompanyDetailById(long CompanyId)
         {
             var Country = _db.TblCountries.ToList();
-            var company = _db.TblCompanies.Where(x => x.CompanyId == CompanyId).FirstOrDefault(); //find the details of company by Id from table
+            var company = _db.TblCompanies.Where(x => x.CompanyId == CompanyId && x.IsActive == true && x.DeletedAt == null).FirstOrDefault(); //find the details of company by Id from table
             if (company != null)
             {
                 return new CompanyModel
@@ -77,8 +92,24 @@ namespace Service.Implementation
             }
         }
 
+        public List<CompanyModel> GetCompanyDetails()
+        {
+            List<CompanyModel> CompanyList = (from c in _db.TblCompanies 
+                                              where( c.IsActive == true && c.DeletedAt == null)
+                                              select new CompanyModel
+                                              {
+                                                  CompanyName = c.CompanyName,
+                                                  CompanyAddress = c.CompanyAddress,
+                                                  ContactNumber = c.ContactNumber,
+                                                  Country = c.Country.CountryName,
+                                                  Email = c.Email,
+
+                                              }).ToList();
+            return CompanyList;
+        }
+
         //method for updating the company details
-        public TblCompany UpdateCompany(long CompanyId, UpdateCompanyModel model)
+        public ResponseModel UpdateCompany(long CompanyId, UpdateCompanyModel model)
         {
             var companydetails = _db.TblCompanies.Where(x => (x.CompanyName == model.CompanyName && x.Email == model.Email) && x.CompanyId != model.CompanyId).AsQueryable(); //checks wheather the company name and email already exist or not
             if (companydetails.Any())
@@ -96,10 +127,20 @@ namespace Service.Implementation
                 company.CountryId = model.CountryId;
                 company.UpdatedAt = DateTime.Now;
                 _db.SaveChanges();
-                return company;
+                return new ResponseModel()
+                {
+                    Id = CompanyId,
+                    Message = "Company Updated Successfully.",
+                    StatusCode = 200,
+                };
             }
 
-            return null;
+            return new ResponseModel()
+            {
+                Id = CompanyId,
+                Message = "Company doesn't Exist.",
+                StatusCode = 401,
+            };
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Service.Implementation
         }
 
         //method for user registration
-        public TblUser Registration(RegistrationModel model)
+        public string Registration(RegistrationModel model)
         {
             var user = _db.TblUsers.Any(x => x.Email.Equals(model.Email.ToLower()));
             if (user == true)
@@ -84,8 +84,8 @@ namespace Service.Implementation
                 newuser.Lastname = model.Lastname;
                 newuser.Email = model.Email;
                 newuser.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
-                newuser.Avatar = model.Avatar;
                 newuser.PhoneNumber = model.PhoneNumber;
+                newuser.Avatar = UserAvatar.AvatarUpload(model.Avatar);
                 newuser.Role = model.Role;
                 newuser.CountryId = model.CountryId;
                 newuser.CityId = model.CityId;
@@ -94,7 +94,9 @@ namespace Service.Implementation
             _db.TblUsers.Add(newuser);
             _db.SaveChanges();
 
-            return newuser;
+            return "You Have Successfully Registered Yourself.You Can Login Now.";
         }
+
+       
     }
 }

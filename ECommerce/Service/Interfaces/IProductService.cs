@@ -1,16 +1,21 @@
-﻿using Data.Entities;
+﻿using Common.AppSettings;
 using Service.Models.Product;
 
 namespace Service.Interfaces
 {
     public interface IProductService
     {
-        public TblProduct AddProduct(AddProductModel model);
+        public long? AddProduct(AddProductModel model);
 
-        public ProductModel GetProductDetail(long productId);
+        public ProductModel GetProductDetailById(long productId);
 
-        public TblProduct UpdateProduct(long ProductId, UpdateProductModel model);
+        public ResponseModel UpdateProduct(long ProductId, UpdateProductModel model);
 
         public bool DeleteProduct(long ProductId);
+
+        public string ProductImage(ProductImageModel model);
+
+        public List<ProductModel> GetProductDetails();
+
     }
 }

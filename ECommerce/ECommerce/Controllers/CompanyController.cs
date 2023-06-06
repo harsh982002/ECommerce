@@ -1,4 +1,4 @@
-﻿using Data.Entities;
+﻿using Common.AppSettings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
@@ -17,14 +17,14 @@ namespace ECommerce.Controllers
             _companyService = companyService;
         }
 
-
-        [HttpGet("/companydetails")]
-        public IActionResult CompanyDetails(long CompanyId)
+        [AllowAnonymous]
+        [HttpGet("/companydetails/{CompanyId}")]
+        public IActionResult CompanyDetailsById(long CompanyId)
         {
-            CompanyModel response = _companyService.GetCompanyDetail(CompanyId);
-            if (response != null)
+            CompanyModel Response = _companyService.GetCompanyDetailById(CompanyId);
+            if (Response != null)
             {
-                return Ok(response);
+                return Ok(Response);
             }
             else
             {
@@ -36,14 +36,18 @@ namespace ECommerce.Controllers
         [HttpPost("/addcompany")]
         public IActionResult AddCompany(AddCompanyModel model)
         {
-            TblCompany Company = _companyService.AddCompany(model);
-            if (Company != null)
+            long? Response = _companyService.AddCompany(model);
+            if (Response != null)
             {
-                return Ok("Company Added successfully");
+                return Ok(Response);
             }
             else
             {
-                return StatusCode(409, "Company Already Exist");
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Company Already Exist!"
+                });
             }
         }
 
@@ -55,14 +59,26 @@ namespace ECommerce.Controllers
             {
                 return BadRequest();
             }
-            TblCompany company = _companyService.UpdateCompany(CompanyId, model);
-            if (company != null)
+            ResponseModel Response = _companyService.UpdateCompany(CompanyId, model);
+            if (Response != null)
             {
-                return Ok("Company Updated successfully");
+                return Ok(Response);
+            }
+            else if (Response?.Message == "Company Doesn't Exist!")
+            {
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Company Doesn't Exist!"
+                });
             }
             else
             {
-                return StatusCode(409, "Company doesn't Exists!");
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Company Already Exist!"
+                });
             }
         }
 
@@ -77,7 +93,45 @@ namespace ECommerce.Controllers
             }
             else
             {
-                return StatusCode(409, "Company doesn't Exists!");
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Company doesn't Exist!"
+                });
+            }
+        }
+
+        [Authorize(Roles ="Admin")]
+        [HttpPost("/companydetails")]
+        public IActionResult GetCompanyDetails()
+        {
+            List<CompanyModel> Response = _companyService.GetCompanyDetails();
+            if(Response == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(Response);
+            }
+        }
+
+        [Authorize(Roles ="Admin,Supplier")]
+        [HttpPost("/updateCompanystatus/{CompanyId}")]
+        public IActionResult CompanyStatus(long CompanyId, bool Status)
+        {
+            bool Response = _companyService.CompanyStatus(CompanyId, Status);
+            if (Response == true)
+            {
+                return Ok("Status Updated Successfully");
+            }
+            else
+            {
+                return Ok(new ResponseModel()
+                {
+                    StatusCode = 401,
+                    Message = "Company doesn't Exist!"
+                });
             }
         }
     }

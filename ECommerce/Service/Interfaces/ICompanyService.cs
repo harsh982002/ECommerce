@@ -1,16 +1,20 @@
-﻿using Data.Entities;
+﻿using Common.AppSettings;
 using Service.Models.Company;
 
 namespace Service.Interfaces
 {
     public interface ICompanyService
     {
-        public CompanyModel GetCompanyDetail(long CompanyId);
+        public CompanyModel GetCompanyDetailById(long CompanyId);
 
-        public TblCompany AddCompany(AddCompanyModel model);
+        public long? AddCompany(AddCompanyModel model);
 
-        public TblCompany UpdateCompany(long CompanyId, UpdateCompanyModel model);
+        public ResponseModel UpdateCompany(long CompanyId, UpdateCompanyModel model);
 
         public bool DeleteCompany(long CompanyId);
+
+        public List<CompanyModel> GetCompanyDetails();
+
+        public bool CompanyStatus(long CompanyId, bool status);
     }
 }

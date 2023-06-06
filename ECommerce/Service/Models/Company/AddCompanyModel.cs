@@ -20,5 +20,6 @@ namespace Service.Models.Company
 
         [Required]
         public byte? CountryId { get; set; }
+
     }
 }

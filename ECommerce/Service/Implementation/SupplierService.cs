@@ -1,4 +1,5 @@
-﻿using Data.Data;
+﻿using Common.AppSettings;
+using Data.Data;
 using Data.Entities;
 using Service.Interfaces;
 using Service.Models.Supplier;
@@ -13,7 +14,7 @@ namespace Service.Implementation
         {
             _db = db;
         }
-        public TblSupplier AddSupplier(AddSupplierModel model)
+        public long? AddSupplier(AddSupplierModel model)
         {
             var supplier = _db.TblSuppliers.Any(x => x.SupplierName.ToLower() == model.SupplierName.ToLower() && x.Email == model.Email); //checks wheather the company name and email already exist or not.
             if (supplier)
@@ -33,7 +34,7 @@ namespace Service.Implementation
             _db.TblSuppliers.Add(AddedSupplier);
             _db.SaveChanges();
 
-            return AddedSupplier;
+            return AddedSupplier.SupplierId;
         }
 
         public bool DeleteSupplier(short SupplierId)
@@ -51,10 +52,10 @@ namespace Service.Implementation
             }
         }
 
-        public SupplierModel GetSupplierDetails(short SupplierId)
+        public SupplierModel GetSupplierDetailsById(short SupplierId)
         {
             var company = _db.TblCompanies.ToList();
-            var supplier = _db.TblSuppliers.Where(x => x.SupplierId == SupplierId).FirstOrDefault(); //find the details of company by Id from table
+            var supplier = _db.TblSuppliers.Where(x => x.SupplierId == SupplierId && x.Status == true && x.DeletedAt == null).FirstOrDefault(); //find the details of company by Id from table
             if (supplier != null)
             {
                 return new SupplierModel
@@ -71,7 +72,37 @@ namespace Service.Implementation
             }
         }
 
-        public TblSupplier UpdateSupplier(short SupplierId, UpdateSupplierModel model)
+        public List<SupplierModel> GetSupplierDetails()
+        {
+            List<SupplierModel> SupplierList = (from s in _db.TblSuppliers
+                                                where (s.Status == true && s.DeletedAt == null)
+                                                select new SupplierModel
+                                                {
+                                                    SupplierName = s.SupplierName,
+                                                    ContactNumber = s.ContactNumber,
+                                                    Email = s.Email,
+                                                    Company = s.Company.CompanyName,
+
+                                                }).ToList();
+            return SupplierList;
+        }
+
+        public bool SupplierStatus(short SupplierId, bool status)
+        {
+            var supplier = _db.TblSuppliers.Find(SupplierId);
+            if (supplier != null && supplier.DeletedAt == null)
+            {
+                supplier.Status = status;
+                _db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public ResponseModel UpdateSupplier(short SupplierId, UpdateSupplierModel model)
         {
             var supplierdetails = _db.TblSuppliers.Where(x => (x.SupplierName == model.SupplierName && x.Email == model.Email) && x.SupplierId != model.SupplierId).AsQueryable(); //checks wheather the company name and email already exist or not
             if (supplierdetails.Any())
@@ -87,10 +118,20 @@ namespace Service.Implementation
                 supplier.Email = model?.Email;
                 supplier.CompanyId = model.CompanyId;
                 _db.SaveChanges();
-                return supplier;
+                return new ResponseModel()
+                {
+                    Id = SupplierId,
+                    Message = "Supplier Updated Successfully.",
+                    StatusCode = 200,
+                };
             }
 
-            return null;
+            return new ResponseModel()
+            {
+                Id = SupplierId,
+                Message = "Supplier Doesn't Exist!",
+                StatusCode = 401,
+            };
         }
     }
 }
