@@ -32,7 +32,7 @@ namespace ECommerce.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Supplier")]
         [HttpPost("/addcompany")]
         public IActionResult AddCompany(AddCompanyModel model)
         {
@@ -51,7 +51,7 @@ namespace ECommerce.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Supplier")]
         [HttpPut("/updatecompany/{CompanyId}")]
         public IActionResult UpdateCompany(long CompanyId, UpdateCompanyModel model)
         {
@@ -68,6 +68,7 @@ namespace ECommerce.Controllers
             {
                 return Ok(new ResponseModel()
                 {
+                    Id = CompanyId,
                     StatusCode = 401,
                     Message = "Company Doesn't Exist!"
                 });
@@ -76,13 +77,14 @@ namespace ECommerce.Controllers
             {
                 return Ok(new ResponseModel()
                 {
+
                     StatusCode = 401,
                     Message = "Company Already Exist!"
                 });
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Supplier")]
         [HttpDelete("/deletecompany/{CompanyId}")]
         public IActionResult DeleteCompany(long CompanyId)
         {
@@ -95,6 +97,7 @@ namespace ECommerce.Controllers
             {
                 return Ok(new ResponseModel()
                 {
+                    Id = CompanyId,
                     StatusCode = 401,
                     Message = "Company doesn't Exist!"
                 });

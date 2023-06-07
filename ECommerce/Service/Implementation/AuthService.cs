@@ -10,10 +10,10 @@ namespace Service.Implementation
 {
     public class AuthService : IAuthService
     {
-        private readonly EcommerceContext _db;
+        private readonly EcommercedbContext _db;
         private readonly JwtViewModel _options;
 
-        public AuthService(EcommerceContext db, IOptions<JwtViewModel> options)
+        public AuthService(EcommercedbContext db, IOptions<JwtViewModel> options)
         {
             _db = db;
             _options = options.Value;
@@ -36,7 +36,6 @@ namespace Service.Implementation
             }
 
             var token = JwtHelper.GenerateToken(_options, user); //generates jwtToken
-
             return new AuthModel
             {
                 Email = user.Email,
@@ -77,7 +76,6 @@ namespace Service.Implementation
                 return null;
 
             }
-
             var newuser = new TblUser();
             {
                 newuser.Firstname = model.Firstname;
@@ -97,6 +95,5 @@ namespace Service.Implementation
             return "You Have Successfully Registered Yourself.You Can Login Now.";
         }
 
-       
     }
 }

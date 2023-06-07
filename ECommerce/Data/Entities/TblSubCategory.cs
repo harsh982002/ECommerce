@@ -1,8 +1,11 @@
-﻿namespace Data.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Data.Entities;
 
 public partial class TblSubCategory
 {
-    public int SubcategoryId { get; set; }
+    public int SubCategoryId { get; set; }
 
     public string SubCategoryName { get; set; } = null!;
 

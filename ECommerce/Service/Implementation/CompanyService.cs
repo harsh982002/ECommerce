@@ -8,9 +8,9 @@ namespace Service.Implementation
 {
     public class CompanyService : ICompanyService
     {
-        private readonly EcommerceContext _db;
+        private readonly EcommercedbContext _db;
 
-        public CompanyService(EcommerceContext db)
+        public CompanyService(EcommercedbContext db)
         {
             _db = db;
         }
@@ -23,7 +23,6 @@ namespace Service.Implementation
             {
                 return null;
             }
-
             var AddedCompany = new TblCompany();
             {
                 AddedCompany.CompanyName = model.CompanyName;
@@ -42,7 +41,7 @@ namespace Service.Implementation
         public bool CompanyStatus(long CompanyId, bool status)
         {
             var company = _db.TblCompanies.Find(CompanyId);
-            if (company != null && company.DeletedAt == null)
+            if (company != null && company.DeletedAt == null && company.Status == 2)
             {
                 company.IsActive = status;
                 _db.SaveChanges();
@@ -74,7 +73,7 @@ namespace Service.Implementation
         public CompanyModel GetCompanyDetailById(long CompanyId)
         {
             var Country = _db.TblCountries.ToList();
-            var company = _db.TblCompanies.Where(x => x.CompanyId == CompanyId && x.IsActive == true && x.DeletedAt == null).FirstOrDefault(); //find the details of company by Id from table
+            var company = _db.TblCompanies.Where(x => x.CompanyId == CompanyId && x.IsActive == true && x.DeletedAt == null && x.Status == 2).FirstOrDefault(); //find the details of company by Id from table
             if (company != null)
             {
                 return new CompanyModel
@@ -95,7 +94,7 @@ namespace Service.Implementation
         public List<CompanyModel> GetCompanyDetails()
         {
             List<CompanyModel> CompanyList = (from c in _db.TblCompanies 
-                                              where( c.IsActive == true && c.DeletedAt == null)
+                                              where( c.IsActive == true && c.DeletedAt == null && c.Status == 2)
                                               select new CompanyModel
                                               {
                                                   CompanyName = c.CompanyName,
@@ -118,7 +117,7 @@ namespace Service.Implementation
             }
 
             var company = _db.TblCompanies.Find(CompanyId); //get the id of company which we want to update
-            if (company != null && company.DeletedAt == null)
+            if (company != null && company.DeletedAt == null && company.Status == 2)
             {
                 company.CompanyName = model.CompanyName;
                 company.CompanyAddress = model.CompanyAddress;

@@ -1,4 +1,7 @@
-﻿namespace Data.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Data.Entities;
 
 public partial class TblSupplier
 {
@@ -10,7 +13,9 @@ public partial class TblSupplier
 
     public string Email { get; set; } = null!;
 
-    public bool? Status { get; set; }
+    public bool? IsActive { get; set; }
+
+    public byte? Status { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -18,9 +23,11 @@ public partial class TblSupplier
 
     public DateTime? DeletedAt { get; set; }
 
-    public long CompanyId { get; set; }
+    public long? CompanyId { get; set; }
 
-    public virtual TblCompany Company { get; set; } = null!;
+    public virtual TblCompany? Company { get; set; }
+
+    public virtual TblApprovalStatus? StatusNavigation { get; set; }
 
     public virtual ICollection<TblProduct> TblProducts { get; set; } = new List<TblProduct>();
 }

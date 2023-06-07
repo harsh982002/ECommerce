@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "KUOTF1htHttA8B8VDt+PJ3Ik6dZbKamO6JhdiVLLx+g=",
+  "Source": "sms",
+  "BasePath": "_content/sms",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -12,7 +12,5 @@ namespace Service.Models.Supplier
         [Required]
         public string Email { get; set; } = string.Empty;
 
-        [Required]
-        public long CompanyId { get; set; }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace Data.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Data.Entities;
 
 public partial class TblProduct
 {
@@ -14,11 +17,19 @@ public partial class TblProduct
 
     public bool? IsFree { get; set; }
 
+    public byte? Status { get; set; }
+
     public int? CategoryId { get; set; }
+
+    public int? SubCategoryId { get; set; }
+
+    public short? SupplierId { get; set; }
 
     public long? CompanyId { get; set; }
 
     public decimal? Discount { get; set; }
+
+    public int? AvailableStock { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -26,19 +37,15 @@ public partial class TblProduct
 
     public DateTime? DeletedAt { get; set; }
 
-    public int? SubCategoryid { get; set; }
-
-    public short SupplierId { get; set; }
-
-    public int? AvailableStock { get; set; }
-
     public virtual TblCategory? Category { get; set; }
 
     public virtual TblCompany? Company { get; set; }
 
+    public virtual TblApprovalStatus? StatusNavigation { get; set; }
+
     public virtual TblSubCategory? SubCategory { get; set; }
 
-    public virtual TblSupplier Supplier { get; set; } = null!;
+    public virtual TblSupplier? Supplier { get; set; }
 
     public virtual ICollection<TblCart> TblCarts { get; set; } = new List<TblCart>();
 

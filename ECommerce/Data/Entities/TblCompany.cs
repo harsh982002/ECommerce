@@ -1,4 +1,7 @@
-﻿namespace Data.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Data.Entities;
 
 public partial class TblCompany
 {
@@ -8,11 +11,13 @@ public partial class TblCompany
 
     public string CompanyAddress { get; set; } = null!;
 
-    public string ContactNumber { get; set; } = null!;
+    public string? ContactNumber { get; set; }
 
     public string Email { get; set; } = null!;
 
     public byte? CountryId { get; set; }
+
+    public byte? Status { get; set; }
 
     public bool? IsActive { get; set; }
 
@@ -23,6 +28,8 @@ public partial class TblCompany
     public DateTime? DeletedAt { get; set; }
 
     public virtual TblCountry? Country { get; set; }
+
+    public virtual TblApprovalStatus? StatusNavigation { get; set; }
 
     public virtual ICollection<TblProduct> TblProducts { get; set; } = new List<TblProduct>();
 

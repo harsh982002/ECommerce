@@ -1,4 +1,7 @@
-﻿namespace Data.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Data.Entities;
 
 public partial class TblCart
 {
@@ -11,8 +14,6 @@ public partial class TblCart
     public byte? Quantity { get; set; }
 
     public decimal? TotalAmount { get; set; }
-
-    public bool? Removed { get; set; }
 
     public virtual TblProduct? Product { get; set; }
 

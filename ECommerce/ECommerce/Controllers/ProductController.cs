@@ -68,6 +68,7 @@ namespace ECommerce.Controllers
             {
                 return Ok(new ResponseModel()
                 {
+                    Id = ProductId,
                     StatusCode = 401,
                     Message = "Product Doesn't Exist!"
                 });
@@ -95,6 +96,7 @@ namespace ECommerce.Controllers
             {
                 return Ok(new ResponseModel()
                 {
+                    Id = ProductId,
                     StatusCode = 401,
                     Message = "Product Already Exist!"
                 });

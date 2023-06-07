@@ -9,10 +9,10 @@ namespace Service.Implementation
 {
     public class ProductService : IProductService
     {
-        private readonly EcommerceContext _db;
+        private readonly EcommercedbContext _db;
         private readonly Imageurl _options;
 
-        public ProductService(EcommerceContext db, IOptions<Imageurl> options)
+        public ProductService(EcommercedbContext db, IOptions<Imageurl> options)
         {
             _db = db;
             _options = options.Value;
@@ -36,7 +36,7 @@ namespace Service.Implementation
                 AddedProduct.StokeKeepingUnit = model.StokeKeepingUnit;
                 AddedProduct.CategoryId = model.CategoryId;
                 AddedProduct.CompanyId = model.CompanyId;
-                AddedProduct.SubCategoryid = model.SubCategoryid;
+                AddedProduct.SubCategoryId = model.SubCategoryid;
                 AddedProduct.SupplierId = model.SupplierId;
                 AddedProduct.AvailableStock = model.AvailableStock;
 
@@ -71,7 +71,7 @@ namespace Service.Implementation
             var Subcategory = _db.TblSubCategories.ToList();
             var Company = _db.TblCompanies.ToList();
             var Supplier = _db.TblSuppliers.ToList();
-            var product = _db.TblProducts.Where(x => x.ProductId == productId && x.DeletedAt == null).FirstOrDefault();  //find the details of product by Id from table
+            var product = _db.TblProducts.Where(x => x.ProductId == productId && x.DeletedAt == null && x.Status == 2).FirstOrDefault();  //find the details of product by Id from table
             if (product != null)
             {
                 return new ProductModel
@@ -96,7 +96,7 @@ namespace Service.Implementation
         public List<ProductModel> GetProductDetails()
         {
             List<ProductModel> ProductList = (from p in _db.TblProducts
-                                              where p.DeletedAt == null
+                                              where (p.DeletedAt == null && p.Status == 2)
                                               select new ProductModel
                                               {
                                                   ProductName = p.ProductName,
@@ -157,7 +157,7 @@ namespace Service.Implementation
             }
 
             var Product = _db.TblProducts.Find(ProductId); //get the id of product which we want to update
-            if (Product != null && Product.DeletedAt == null)
+            if (Product != null && Product.DeletedAt == null && Product.Status == 2)
             {
                 Product.ProductName = model.ProductName;
                 Product.Description = model.Description;
@@ -165,7 +165,7 @@ namespace Service.Implementation
                 Product.StokeKeepingUnit = model.StokeKeepingUnit;
                 Product.CategoryId = model.CategoryId;
                 Product.CompanyId = model.CompanyId;
-                Product.SubCategoryid = model.SubCategoryid;
+                Product.SubCategoryId = model.SubCategoryid;
                 Product.SupplierId = model.SupplierId;
                 Product.AvailableStock = model.AvailableStock;
                 Product.UpdatedAt = DateTime.Now;

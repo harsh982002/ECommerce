@@ -8,9 +8,9 @@ namespace Service.Implementation
 {
     public class SupplierService : ISupplierService
     {
-        private readonly EcommerceContext _db;
+        private readonly EcommercedbContext _db;
 
-        public SupplierService(EcommerceContext db)
+        public SupplierService(EcommercedbContext db)
         {
             _db = db;
         }
@@ -28,7 +28,6 @@ namespace Service.Implementation
                 AddedSupplier.SupplierName = model.SupplierName;
                 AddedSupplier.ContactNumber = model.ContactNumber;
                 AddedSupplier.Email = model.Email;
-                AddedSupplier.CompanyId = model.CompanyId;
             }
 
             _db.TblSuppliers.Add(AddedSupplier);
@@ -55,7 +54,7 @@ namespace Service.Implementation
         public SupplierModel GetSupplierDetailsById(short SupplierId)
         {
             var company = _db.TblCompanies.ToList();
-            var supplier = _db.TblSuppliers.Where(x => x.SupplierId == SupplierId && x.Status == true && x.DeletedAt == null).FirstOrDefault(); //find the details of company by Id from table
+            var supplier = _db.TblSuppliers.Where(x => x.SupplierId == SupplierId && x.IsActive == true && x.DeletedAt == null && x.Status == 2).FirstOrDefault(); //find the details of company by Id from table
             if (supplier != null)
             {
                 return new SupplierModel
@@ -63,7 +62,6 @@ namespace Service.Implementation
                     SupplierName = supplier.SupplierName,
                     ContactNumber = supplier.ContactNumber,
                     Email = supplier.Email,
-                    Company = supplier.Company.CompanyName,
                 };
             }
             else
@@ -75,13 +73,12 @@ namespace Service.Implementation
         public List<SupplierModel> GetSupplierDetails()
         {
             List<SupplierModel> SupplierList = (from s in _db.TblSuppliers
-                                                where (s.Status == true && s.DeletedAt == null)
+                                                where (s.IsActive == true && s.DeletedAt == null && s.Status == 2)
                                                 select new SupplierModel
                                                 {
                                                     SupplierName = s.SupplierName,
                                                     ContactNumber = s.ContactNumber,
                                                     Email = s.Email,
-                                                    Company = s.Company.CompanyName,
 
                                                 }).ToList();
             return SupplierList;
@@ -92,7 +89,7 @@ namespace Service.Implementation
             var supplier = _db.TblSuppliers.Find(SupplierId);
             if (supplier != null && supplier.DeletedAt == null)
             {
-                supplier.Status = status;
+                supplier.IsActive = status;
                 _db.SaveChanges();
                 return true;
             }
@@ -111,12 +108,11 @@ namespace Service.Implementation
             }
 
             var supplier = _db.TblSuppliers.Find(SupplierId); //get the id of company which we want to update
-            if (supplier != null && supplier.DeletedAt == null)
+            if (supplier != null && supplier.DeletedAt == null && supplier.Status == 2)
             {
                 supplier.SupplierName = model?.SupplierName;
                 supplier.ContactNumber = model?.ContactNumber;
                 supplier.Email = model?.Email;
-                supplier.CompanyId = model.CompanyId;
                 _db.SaveChanges();
                 return new ResponseModel()
                 {

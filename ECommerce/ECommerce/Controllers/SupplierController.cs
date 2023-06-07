@@ -68,6 +68,7 @@ namespace ECommerce.Controllers
             {
                 return Ok(new ResponseModel()
                 {
+                    Id = SupplierId,
                     StatusCode = 401,
                     Message = "Supplier Doesn't Exist!"
                 });
@@ -95,6 +96,7 @@ namespace ECommerce.Controllers
             {
                 return Ok(new ResponseModel()
                 {
+                    Id = SupplierId,
                     StatusCode = 401,
                     Message = "Supplier Doesn't Exist!"
                 });
